@@ -122,12 +122,49 @@ reporting_agent = Agent(
     db=db
 )
 
-benchmark_agent = Agent(
-    name="BenchmarkAgent",
-    role="Compare predicted prices with market trends",
-    model=fallback_model,
+
+goal_agent = Agent(
+    name="GoalAgent",
+    role="Vérifie que le rapport respecte les objectifs : rapport clair, structuré, sans PII, avec tendances et recommandations.",
+    model=gemini_model,
     db=db
 )
+
+judge_agent = Agent(
+    name="JudgeAgent",
+    role="Évalue la qualité du rapport généré. Donne une note sur 10 et une explication.",
+    model=gemini_model,
+    db=db
+)
+
+factcheck_agent = Agent(
+    name="FactCheckAgent",
+    role="Vérifie la factualité du rapport. Détecte les affirmations douteuses ou inventées.",
+    model=gemini_model,
+    db=db
+)
+
+format_agent = Agent(
+    name="FormatAgent",
+    role="Force le rapport à suivre un format JSON avec champs : title, summary, predictions, insights, recommendations.",
+    model=gemini_model,
+    db=db
+)
+
+comparer_agent = Agent(
+    name="ComparerAgent",
+    role="Compare deux versions du rapport (Gemini vs Mistral) et décide laquelle est meilleure en clarté, précision, complétude.",
+    model=gemini_model,
+    db=db
+)
+
+benchmark_agent = Agent(
+    name="BenchmarkAgent",
+    role="Teste plusieurs prompts et évalue la performance des agents (temps, qualité, hallucinations).",
+    model=gemini_model,
+    db=db
+)
+
 
 # === Guardrail Agents ===
 
@@ -169,7 +206,7 @@ real_estate_team = Team(
     ],
     tools=[ReasoningTools(add_instructions=True)],
     instructions=[
-        "Always include a 'title' field when calling analyze().",
+        "Always include a 'title' argument when calling analyze(), for example: title='Real Estate Market Report'.",
         "Produce a client-ready real estate report with masked PII, predictions, insights, and recommendations.",
         "Ensure responses are on-topic, hallucination-free, and without PII leaks."
     ],

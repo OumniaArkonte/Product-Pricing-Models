@@ -9,7 +9,7 @@ from agno.tools import tool
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 
 # === Model ===
-gemini_model = Gemini(id="gemini-2.0-flash", api_key="XXXXXX")
+gemini_model = Gemini(id="gemini-2.0-flash", api_key="xxxxxxxxxxx")
 
 # ========================================================
 #  Guardrail FUNCTIONS (callable en local)
